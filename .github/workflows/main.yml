@@ -8,11 +8,20 @@ jobs:
   test:
     runs-on: windows-latest
     steps:
+      # Checkout the repository
       - uses: actions/checkout@v3
+
+      # Setup Java
       - uses: actions/setup-java@v3
         with:
           java-version: "19"
           cache: maven
           distribution: "temurin"
-      - uses: browser-actions/setup/chrome@latest
-      - run: mvn clean test
+
+      # Install Chrome using Chocolatey (Windows package manager)
+      - name: Install Chrome
+        run: choco install googlechrome --no-progress -y
+
+      # Run Maven tests
+      - name: Run Tests
+        run: mvn clean test
